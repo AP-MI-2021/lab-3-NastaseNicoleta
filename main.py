@@ -2,7 +2,8 @@ def printMenu():
     print("1. citire lista")
     print("2. cea mai lunga subsecventa in care toate numerele sunt ordonate crescator")
     print("3. cea mai lunga subsecventa in care toate numerele au partea intreaga egala cu partea fractionara")
-    print("4. iesire")
+    print("4. cea mai lunga subsecventa in care toate numerele sunt prime")
+    print("5. iesire")
 
 def citire_termeni():
     list = []
@@ -118,6 +119,54 @@ def test_get_longest_equal_int_real():
     assert get_longest_equal_int_real([24.23, 65.65, 743.743, 892.892, 4165.4165, 76.87, 34.34]) == [65.65, 743.743, 892.892, 4165.4165]
 
 
+#problema 2
+
+def isPrime(n :int):
+    '''
+    
+    :param n: Un numar intreg
+    :return: True daca un numar este prim, respectiv False in caz contrar
+    
+    '''
+
+    if n<2:
+        return False
+
+    for i in range(2, n//2+1):
+        if n % i == 0:
+            return False
+
+    return True
+
+
+
+def isPrimelst(lst: list[int]):
+    for num in lst:
+        if not isPrime(num):
+            return False
+    return True
+
+def test_isPrimelst():
+    assert isPrimelst([2, 7]) is True
+    assert isPrimelst([4, 8, 6]) is False
+
+def get_longest_all_primes(lst: list[int]):
+    '''
+
+    :param lst: o lista de numere intregi
+    :return: subsecventa maxima in care toate numerele sunt prime
+
+    '''
+    subsecventaMax = []
+    for i in range(len(lst)):
+        for j in range(i, len(lst)):
+            if isPrimelst(lst[i:j + 1]) is True and (len(lst[i:j + 1]) > len(subsecventaMax)):
+                subsecventaMax = lst[i:j + 1]
+    return subsecventaMax
+
+def test_get_longest_all_primes():
+    assert get_longest_all_primes([2, 5, 7, 6, 8, 2, 7]) == [2, 5, 7]
+    assert get_longest_all_primes([13, 11, 7, 2, 5, 8, 2, 3, 17]) == [13, 11, 7, 2, 5]
 
 
 def main():
@@ -133,6 +182,8 @@ def main():
         elif optiune == '3':
             print(get_longest_equal_int_real(list))
         elif optiune == '4':
+            print(get_longest_all_primes(list))
+        elif optiune == '5':
             break
         else:
             print("optiune gresita, reincercati!")
@@ -142,5 +193,7 @@ if __name__ == '__main__' :
     test_verificaree()
     test_get_longest_sorted_asc()
     test_get_longest_equal_int_real()
+    test_isPrimelst()
+    test_get_longest_all_primes()
 
     main()
